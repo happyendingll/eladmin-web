@@ -8,6 +8,8 @@
         <el-input v-model="query.url" clearable placeholder="链接地址" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <label class="el-form-item-label">标题</label>
         <el-input v-model="query.title" clearable placeholder="标题" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <label class="el-form-item-label">分类</label>
+        <el-input v-model="query.kind" clearable placeholder="分类" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
@@ -17,6 +19,16 @@
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="链接地址" prop="url">
             <el-input v-model="form.url" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="分类">
+            <el-select v-model="form.kind" filterable placeholder="请选择">
+              <el-option
+                v-for="item in dict.nav_sort"
+                :key="item.id"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -36,9 +48,14 @@
             />
           </template>
         </el-table-column>
+        <el-table-column prop="kind" label="分类">
+          <template slot-scope="scope">
+            {{ dict.label.nav_sort[scope.row.kind] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="url" label="链接地址" />
         <el-table-column prop="title" label="标题" />
         <el-table-column prop="description" label="描述" />
-        <el-table-column prop="url" label="链接地址" />
         <el-table-column v-if="checkPer(['admin','blogNav:edit','blogNav:del'])" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -62,11 +79,12 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 
-const defaultForm = { id: null, url: null, title: null, description: null, logo: null, createTime: null, updateTime: null }
+const defaultForm = { id: null, url: null, title: null, description: null, logo: null, createTime: null, updateTime: null, kind: null }
 export default {
   name: 'BlogNav',
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
+  dicts: ['nav_sort'],
   cruds() {
     return CRUD({ title: '博客导航栏', url: 'api/blogNav', idField: 'id', sort: 'id,desc', crudMethod: { ...crudBlogNav }})
   },
@@ -87,7 +105,8 @@ export default {
       },
       queryTypeOptions: [
         { key: 'url', display_name: '链接地址' },
-        { key: 'title', display_name: '标题' }
+        { key: 'title', display_name: '标题' },
+        { key: 'kind', display_name: '分类' }
       ]
     }
   },
