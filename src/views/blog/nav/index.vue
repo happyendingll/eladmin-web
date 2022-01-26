@@ -20,10 +20,19 @@
           <el-form-item label="链接地址" prop="url">
             <el-input v-model="form.url" style="width: 370px;" />
           </el-form-item>
+          <el-form-item label="标题">
+            <el-input v-model="form.title" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input v-model="form.description" :rows="3" type="textarea" style="width: 370px;" />
+          </el-form-item>
+          <el-form-item label="logo">
+            <el-input v-model="form.logo" style="width: 370px;" />
+          </el-form-item>
           <el-form-item label="分类">
             <el-select v-model="form.kind" filterable placeholder="请选择">
               <el-option
-                v-for="item in dict.nav_sort"
+                v-for="item in dict.nav_kind"
                 :key="item.id"
                 :label="item.label"
                 :value="item.value"
@@ -39,7 +48,7 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="logo" label="logo">
+        <el-table-column prop="logo" label="logo" width="200">
           <template slot-scope="scope">
             <el-image
               style="width: 30px; height: 30px"
@@ -50,12 +59,12 @@
         </el-table-column>
         <el-table-column prop="kind" label="分类">
           <template slot-scope="scope">
-            {{ dict.label.nav_sort[scope.row.kind] }}
+            {{ dict.label.nav_kind[scope.row.kind] }}
           </template>
         </el-table-column>
         <el-table-column prop="url" label="链接地址" />
         <el-table-column prop="title" label="标题" />
-        <el-table-column prop="description" label="描述" />
+        <!-- <el-table-column prop="description" label="描述" /> -->
         <el-table-column v-if="checkPer(['admin','blogNav:edit','blogNav:del'])" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -84,7 +93,7 @@ export default {
   name: 'BlogNav',
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(), header(), form(defaultForm), crud()],
-  dicts: ['nav_sort'],
+  dicts: ['nav_kind'],
   cruds() {
     return CRUD({ title: '博客导航栏', url: 'api/blogNav', idField: 'id', sort: 'id,desc', crudMethod: { ...crudBlogNav }})
   },
