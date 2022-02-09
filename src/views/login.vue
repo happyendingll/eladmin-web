@@ -47,7 +47,7 @@ import Config from '@/settings'
 import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
 import qs from 'qs'
-import Background from '@/assets/images/background.jpg'
+import Background from '@/assets/images/wallhaven-7216pe.jpg'
 export default {
   name: 'Login',
   data() {
@@ -178,18 +178,20 @@ export default {
   .title {
     margin: 0 auto 30px auto;
     text-align: center;
-    color: #707070;
+    color: #fff;
   }
 
   .login-form {
     border-radius: 6px;
     background: #ffffff;
+    background-color: unset;
     width: 385px;
     padding: 25px 25px 5px 25px;
     .el-input {
       height: 38px;
       input {
         height: 38px;
+        background-color: unset;
       }
     }
     .input-icon{
