@@ -170,7 +170,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
   .login {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     height: 100%;
     background-size: cover;
@@ -182,6 +182,7 @@ export default {
   }
 
   .login-form {
+    margin-right: 200px;
     border-radius: 6px;
     background: #ffffff;
     background-color: unset;
